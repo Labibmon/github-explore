@@ -1,11 +1,16 @@
-import styled from "styled-components";
-import Button from "./button";
-import Input from "./input";
+import { FormEvent } from "react"
+import styled from "styled-components"
 import media from "styled-media-query"
+import { useFormContext } from "react-hook-form";
+import Button from "./button"
+import Input from "./input"
 
 type SearchField = {
-  title: string;
+  title: string
+  name: string
+  onSubmit: (event: FormEvent<HTMLFormElement>) => void
 }
+
 
 const SearchStyled = styled.form`
   display: flex;
@@ -21,12 +26,16 @@ const SearchStyled = styled.form`
 `
 
 const SearchField = ({
-  title
+  title,
+  name,
+  onSubmit,
 }: SearchField) => {
+  const { register } = useFormContext()
+
   return (
-    <SearchStyled>
-      <Input className="input" />
-      <Button className="button"> {title} </Button>
+    <SearchStyled onSubmit={onSubmit}>
+      <Input className="input" {...register(name)} />
+      <Button className="button" type="submit"> {title} </Button>
     </SearchStyled>
   )
 }

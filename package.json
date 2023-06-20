@@ -19,6 +19,7 @@
     "polished": "^4.2.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.45.0",
     "styled-components": "^6.0.0-rc.3",
     "styled-media-query": "^2.1.2",
     "typescript": "5.1.3"

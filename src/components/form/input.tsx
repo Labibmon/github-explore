@@ -29,8 +29,9 @@ const InputStyle = styled.input<InputProps>`
   `}
 `
 
-const Input = (props: InputProps) => {
-  return <InputStyle {...props} />
-}
+// eslint-disable-next-line react/display-name
+const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
+  return <InputStyle ref={ref} {...props} />
+});
 
 export default Input

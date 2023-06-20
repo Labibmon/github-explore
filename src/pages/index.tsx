@@ -1,10 +1,10 @@
-import Button from "@/components/form/button";
-import Input from "@/components/form/input";
+import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import SearchField from "@/components/form/search-field";
 import Layout from "@/components/layout";
 import { getUser } from "@/services/api";
-import { useEffect } from "react";
 import styled from "styled-components";
+import { useState } from "react";
+import { User, UserItem } from "@/shared/githubAPI";
 
 const Container = styled.section`
   position: relative;
@@ -35,21 +35,58 @@ const Container = styled.section`
   }
 `;
 
+type InputType = {
+  userName?: string
+  dataList: any[]
+}
+
 export default function Home() {
-  useEffect(() => {
-    getUser('LabibM')
-  }, [])
-  
+  const [data, setData] = useState<UserItem[]>([])
+  // const {
+  //   // errors,
+  //   setError,
+  //   register,
+  //   // formState,
+  //   handleSubmit,
+  // } = useForm<InputType>();
+  const methods = useForm<InputType>()
+  const dataList = methods.getValues("dataList")
+
+  const onSubmit: SubmitHandler<InputType> = async (
+    data,
+  ) => {
+    const { userName } = data;
+    try {
+      const data: User = await getUser(userName);
+      setData(data.items)
+    } catch (error) {
+      console.log(error);
+
+      // setError("userName", {
+      //   type: "manual",
+      //   message: error.toJSON().message,
+      // });
+    }
+  };
+
   return (
     <Layout>
       <Container>
         <div>
           <div className="header">
-            <h2 className="title">Explore Github Repositories</h2>
-            <SearchField title="Search" />
+            <FormProvider {...methods}>
+              <h2 className="title">Explore Github Repositories</h2>
+              <SearchField
+                title="Search"
+                onSubmit={methods.handleSubmit(onSubmit)}
+                name="userName"
+              />
+            </FormProvider>
           </div>
           <div>
-            bodyy
+            {data ? data.map((data, index) => (
+              <>adas</>
+            )) : ''}
           </div>
         </div>
       </Container>

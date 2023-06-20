@@ -1,7 +1,7 @@
 export interface User {
   incomplete_results: boolean;
   total_count: number;
-  item: UserItem[]
+  items: UserItem[]
 }
 
 export interface UserItem {
