@@ -2,6 +2,7 @@ import { useState } from "react";
 import Image from "next/image";
 import styled from "styled-components";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
+import { PulseLoader } from "react-spinners"
 import SearchField from "@/components/form/search-field";
 import Layout from "@/components/layout";
 import { getRepository, getUser } from "@/services/api";
@@ -21,19 +22,25 @@ export default function Home() {
   const [dataSelected, setDataSelected] = useState<UserItem>()
   const [repository, setRepository] = useState<Repository[]>([])
   const methods = useForm<InputType>()
+  const [isLoading, setIsLoading] = useState({
+    data: false,
+    repository: false,
+  })
 
   const onSubmit: SubmitHandler<InputType> = async (
     data,
   ) => {
     const { userName } = data;
+    setIsLoading({ ...isLoading, data: true })
     try {
       const data: User = await getUser(userName);
       setData(data.items)
       console.log(data.items);
+      setIsLoading({ ...isLoading, data: false })
 
     } catch (error) {
       console.log(error);
-
+      setIsLoading({ ...isLoading, data: false })
       // setError("userName", {
       //   type: "manual",
       //   message: error.toJSON().message,
@@ -45,13 +52,16 @@ export default function Home() {
     if (item.id === dataSelected?.id) {
       setDataSelected(undefined)
     } else {
+      setIsLoading({ ...isLoading, repository: true })
       setDataSelected(item);
 
       try {
         const data: Repository[] = await getRepository(item.login);
         setRepository(data)
+        setIsLoading({ ...isLoading, repository: false })
       } catch (error) {
         console.log(error);
+        setIsLoading({ ...isLoading, repository: false })
 
         // setError("userName", {
         //   type: "manual",
@@ -72,6 +82,7 @@ export default function Home() {
                 title="Search"
                 onSubmit={methods.handleSubmit(onSubmit)}
                 name="userName"
+                isLoading={isLoading.data}
                 placeholder="Enter Username"
               />
             </FormProvider>
@@ -97,12 +108,14 @@ export default function Home() {
                 </div>
                 {dataSelected?.id === data.id ?
                   <div className="details">
-                    {repository.map((data: Repository, index: number) => (
-                      <div key={index} className="list-detail">
-                        <h4>{data.name} <span>{data.stargazers_count} <Star /></span></h4>
-                        <p>{data.description}</p>
-                      </div>
-                    ))}
+                    {isLoading.repository ?
+                      <PulseLoader size={10} />
+                      : repository.map((data: Repository, index: number) => (
+                        <div key={index} className="list-detail">
+                          <h4>{data.name} <span>{data.stargazers_count} <Star /></span></h4>
+                          <p>{data.description}</p>
+                        </div>
+                      ))}
                   </div>
                   : <></>}
               </CardList>

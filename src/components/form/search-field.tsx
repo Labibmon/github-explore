@@ -9,6 +9,7 @@ type SearchField = {
   title: string
   name: string
   placeholder?: string
+  isLoading?: boolean
   onSubmit: (event: FormEvent<HTMLFormElement>) => void
 }
 
@@ -31,13 +32,22 @@ const SearchField = ({
   name,
   onSubmit,
   placeholder,
+  isLoading,
 }: SearchField) => {
   const { register } = useFormContext()
 
   return (
     <SearchStyled onSubmit={onSubmit}>
-      <Input className="input" placeholder={placeholder} {...register(name)} />
-      <Button className="button" type="submit"> {title} </Button>
+      <Input 
+        className="input"
+        placeholder={placeholder}
+        {...register(name, { required: true })}
+      />
+      <Button
+        className="button"
+        type="submit"
+        isLoading={isLoading}
+      > {title} </Button>
     </SearchStyled>
   )
 }

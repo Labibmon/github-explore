@@ -1,4 +1,5 @@
 import { ButtonHTMLAttributes, PropsWithChildren } from "react"
+import { PulseLoader } from "react-spinners"
 import media from "styled-media-query"
 import { shade } from "polished"
 import styled, { css } from "styled-components"
@@ -23,6 +24,13 @@ export const ButtonStyled = styled.button`
     &:hover {
       background: ${shade(0.2, theme.colors.gray)};
     }
+
+    &:disabled {
+      pointer-events: 0;
+      cursor: default;
+      opacity: .3;
+      background: ${theme.colors.black};
+    }
   `}
 `
 
@@ -36,9 +44,9 @@ const Button = ({
   ...rest
 }: PropsWithChildren<ButtonProps>) => {
   return (
-    <ButtonStyled {...rest ?? {}}>
+    <ButtonStyled {...rest ?? {}} disabled={isLoading}>
       {isLoading ? (
-        'Loading'
+        <PulseLoader size={10} />
       ) : children }
     </ButtonStyled>
   )
