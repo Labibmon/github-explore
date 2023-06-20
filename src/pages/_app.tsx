@@ -12,16 +12,20 @@ const GlobalStyle = createGlobalStyle`
 `
 
 interface ThemeInterface {
-  main: string;
   colors: {
     primary: string
+    white: string
+    black: string
+    gray: string
   }
 }
 
 const theme: ThemeInterface = {
-  main: '#f0f0f5',
   colors: {
     primary: '#FF8A00',
+    white: '#ffffff',
+    black: '#333333',
+    gray: '#f0f0f5',
   },
 }
 
