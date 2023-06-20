@@ -6,6 +6,8 @@ import styled from "styled-components";
 import { useState } from "react";
 import { User, UserItem } from "@/shared/githubAPI";
 import Image from "next/image";
+import ChevronUp from "@/components/icons/chevron-up";
+import ChevronDown from "@/components/icons/chevron-down";
 
 type InputType = {
   userName?: string
@@ -14,6 +16,13 @@ type InputType = {
 
 export default function Home() {
   const [data, setData] = useState<UserItem[]>([])
+  const [dataSelected, setDataSelected] = useState<UserItem>()
+  const [repository, setRepository] = useState({
+    id: 0,
+    title: 'Title',
+    description: 'Descriptions',
+    star: 12,
+  })
   const methods = useForm<InputType>()
 
   const onSubmit: SubmitHandler<InputType> = async (
@@ -35,6 +44,10 @@ export default function Home() {
     }
   };
 
+  const handleClickCard = (item: UserItem) => {
+    setDataSelected(item.id === dataSelected?.id ? undefined : item)
+  }
+
   return (
     <Layout>
       <Container>
@@ -46,21 +59,36 @@ export default function Home() {
                 title="Search"
                 onSubmit={methods.handleSubmit(onSubmit)}
                 name="userName"
+                placeholder="Enter Username"
               />
             </FormProvider>
           </div>
           <CardListContainer>
             {data ? data.map((data, index) => (
               <CardList key={index}>
-                <Image
-                  width="60"
-                  height="60"
-                  src={data.avatar_url}
-                  alt={data.login}
-                  title={data.login}
-                  aria-label={data.login}
-                />
-                <h3>{data.login}</h3>
+                <div className="header" onClick={() => handleClickCard(data)}>
+                  <Image
+                    width="60"
+                    height="60"
+                    src={data.avatar_url}
+                    alt={data.login}
+                    title={data.login}
+                    aria-label={data.login}
+                  />
+                  <h3>{data.login}</h3>
+                  {dataSelected?.id !== data.id ?
+                    <ChevronDown />
+                    :
+                    <ChevronUp />
+                  }
+                </div>
+                {dataSelected?.id === data.id ?
+                  <div className="details">
+                    {repository.title}
+                    {repository.description}
+                    {repository.star}
+                  </div>
+                : <></>}
               </CardList>
             )) : ''}
           </CardListContainer>
@@ -85,7 +113,7 @@ const Container = styled.section`
     padding: calc(16px + 1.6vh) calc(12px + 1.2vw);
   }
 
-  .header {
+  > div > .header {
     margin-bottom: 24px;
   }
 
@@ -110,27 +138,37 @@ const CardListContainer = styled.div`
   padding: calc(4px + 0.4vh) calc(4px + 0.4vw);
 
 `
-  
+
 const CardList = styled.div`
-  width: calc(100% - ((4px + 0.4vw) * 2) - 2px);
-  padding: calc(4px + 0.4vh) calc(4px + 0.4vw);
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  gap: 30px;
+  width: 100%;
   background-color: ${({ theme }) => theme.colors.white};
-  border: 1px solid ${({ theme }) => theme.colors.white};
   box-shadow: 2px 5px 10px rgb(0,0,0, 0.1);
   
   h3{
     margin: 0;
     white-space: nowrap; 
-    width: 100%; 
+    width: calc(100% - (((4px + 0.4vw) * 2) + 2px + 60px + 60px)); 
     overflow: hidden;
     text-overflow: ellipsis; 
   }
 
+  > div.header {
+    padding: calc(4px + 0.4vh) calc(4px + 0.4vw);
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    cursor: pointer;
+    border: 2px solid ${({ theme }) => theme.colors.white};
+  }
+
+  > div.details{
+    padding: calc(4px + 0.4vh) calc(4px + 0.4vw);
+    background-color: ${({ theme }) => theme.colors.gray};
+  }
+
   &:hover {
-    border: 1px solid ${({ theme }) => theme.colors.black};
+    > div.header {
+      border: 2px solid ${({ theme }) => theme.colors.gray};
+    }
   }
 `

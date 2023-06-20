@@ -8,6 +8,7 @@ import Input from "./input"
 type SearchField = {
   title: string
   name: string
+  placeholder?: string
   onSubmit: (event: FormEvent<HTMLFormElement>) => void
 }
 
@@ -29,12 +30,13 @@ const SearchField = ({
   title,
   name,
   onSubmit,
+  placeholder,
 }: SearchField) => {
   const { register } = useFormContext()
 
   return (
     <SearchStyled onSubmit={onSubmit}>
-      <Input className="input" {...register(name)} />
+      <Input className="input" placeholder={placeholder} {...register(name)} />
       <Button className="button" type="submit"> {title} </Button>
     </SearchStyled>
   )
