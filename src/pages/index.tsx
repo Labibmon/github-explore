@@ -9,6 +9,7 @@ import { Repository, User, UserItem } from "@/shared/githubAPI";
 import ChevronUp from "@/components/icons/chevron-up";
 import ChevronDown from "@/components/icons/chevron-down";
 import Star from "@/components/icons/star";
+import EmptyComponent from "@/components/empty-component";
 
 type InputType = {
   userName?: string
@@ -76,7 +77,7 @@ export default function Home() {
             </FormProvider>
           </div>
           <CardListContainer>
-            {data ? data.map((data, index) => (
+            {data.length > 0 ? data.map((data, index) => (
               <CardList key={index}>
                 <div className="header" onClick={() => handleClickCard(data)}>
                   <Image
@@ -105,7 +106,7 @@ export default function Home() {
                   </div>
                   : <></>}
               </CardList>
-            )) : ''}
+            )) : <EmptyComponent />}
           </CardListContainer>
         </div>
       </Container>
