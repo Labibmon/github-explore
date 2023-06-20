@@ -2,7 +2,7 @@
 
 This is a [Next.js](https://nextjs.org/) project application which integrates with github.com API and allows user to search for up to 5 users with a username similar to the value entered in text input and then on click, display repositories (no limit on displayed repositories amount) for selected GitHub user.
 
-Open [DEMO](http://localhost:3000) for preview
+Open [DEMO](https://github-explore-omega.vercel.app/) for preview
 ## Getting Started
 
 First, run the development server:
