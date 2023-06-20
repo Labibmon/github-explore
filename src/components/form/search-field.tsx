@@ -7,9 +7,9 @@ type SearchField = {
   title: string;
 }
 
-const SearchStyled = styled.div`
+const SearchStyled = styled.form`
   display: flex;
-  gap: 20px;
+  gap: 10px;
   width: 100%;
   min-width: 100%;
   max-width: 100%;

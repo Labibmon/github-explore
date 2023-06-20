@@ -2,6 +2,8 @@ import Button from "@/components/form/button";
 import Input from "@/components/form/input";
 import SearchField from "@/components/form/search-field";
 import Layout from "@/components/layout";
+import { getUser } from "@/services/api";
+import { useEffect } from "react";
 import styled from "styled-components";
 
 const Container = styled.section`
@@ -34,6 +36,10 @@ const Container = styled.section`
 `;
 
 export default function Home() {
+  useEffect(() => {
+    getUser('LabibM')
+  }, [])
+  
   return (
     <Layout>
       <Container>
