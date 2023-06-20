@@ -4,18 +4,6 @@ import styled from "styled-components"
 
 const inter = Inter({ subsets: ['latin'] })
 
-const Main = styled.main`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  height: 100vh;
-  min-height: 100vh;
-  max-height: 100vh;
-  overflow: hidden;
-  background-color: ${({ theme }) => theme.colors.white};
-`
-
 const Layout = ({
   ...props
 }) => {
@@ -34,4 +22,16 @@ const Layout = ({
   )
 }
 
-export default Layout;
+const Main = styled.main`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 100vh;
+  min-height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+  background-color: ${({ theme }) => theme.colors.white};
+`
+
+export default Layout

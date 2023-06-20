@@ -4,6 +4,24 @@ import media from "styled-media-query"
 import { shade } from "polished"
 import styled, { css } from "styled-components"
 
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  isLoading?: boolean
+}
+
+const Button = ({
+  children,
+  isLoading,
+  ...rest
+}: PropsWithChildren<ButtonProps>) => {
+  return (
+    <ButtonStyled {...rest ?? {}} disabled={isLoading}>
+      {isLoading ? (
+        <PulseLoader size={10} />
+      ) : children }
+    </ButtonStyled>
+  )
+}
+
 export const ButtonStyled = styled.button`
   ${({ theme }) => css`
     height: 40px;
@@ -33,23 +51,5 @@ export const ButtonStyled = styled.button`
     }
   `}
 `
-
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  isLoading?: boolean
-}
-
-const Button = ({
-  children,
-  isLoading,
-  ...rest
-}: PropsWithChildren<ButtonProps>) => {
-  return (
-    <ButtonStyled {...rest ?? {}} disabled={isLoading}>
-      {isLoading ? (
-        <PulseLoader size={10} />
-      ) : children }
-    </ButtonStyled>
-  )
-}
 
 export default Button

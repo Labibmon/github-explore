@@ -1,10 +1,15 @@
-import { InputHTMLAttributes, forwardRef } from "react";
+import { InputHTMLAttributes, forwardRef } from "react"
 import styled, { css } from "styled-components"
-import media from "styled-media-query";
+import media from "styled-media-query"
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  hasError?: boolean;
+  hasError?: boolean
 }
+
+// eslint-disable-next-line react/display-name
+const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
+  return <InputStyle ref={ref} {...props} />
+});
 
 const InputStyle = styled.input<InputProps>`
   width: 20%;
@@ -28,10 +33,5 @@ const InputStyle = styled.input<InputProps>`
     width: calc(100% - (25px * 2));
   `}
 `
-
-// eslint-disable-next-line react/display-name
-const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
-  return <InputStyle ref={ref} {...props} />
-});
 
 export default Input

@@ -1,13 +1,5 @@
-import styled from "styled-components";
-import Folder from "./icons/folder";
-
-const EmptyComponentStyled = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 500px;
-`
+import styled from "styled-components"
+import Folder from "./icons/folder"
 
 const EmptyComponent = () => {
   return (
@@ -17,5 +9,13 @@ const EmptyComponent = () => {
     </EmptyComponentStyled>
   )
 }
+
+const EmptyComponentStyled = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 500px;
+`
 
 export default EmptyComponent;

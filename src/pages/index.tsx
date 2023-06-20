@@ -1,16 +1,11 @@
 import { useState } from "react";
-import Image from "next/image";
 import styled from "styled-components";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
-import { PulseLoader } from "react-spinners"
 import SearchField from "@/components/form/search-field";
 import Layout from "@/components/layout";
 import { getRepository, getUser } from "@/services/api";
 import { Repository, User, UserItem } from "@/shared/githubAPI";
-import ChevronUp from "@/components/icons/chevron-up";
-import ChevronDown from "@/components/icons/chevron-down";
-import Star from "@/components/icons/star";
-import EmptyComponent from "@/components/empty-component";
+import RepositoryItems from "@/components/repository-items";
 
 type InputType = {
   userName?: string
@@ -18,10 +13,11 @@ type InputType = {
 }
 
 export default function Home() {
+  const methods = useForm<InputType>()
+
   const [data, setData] = useState<UserItem[]>([])
   const [dataSelected, setDataSelected] = useState<UserItem>()
   const [repository, setRepository] = useState<Repository[]>([])
-  const methods = useForm<InputType>()
   const [isLoading, setIsLoading] = useState({
     data: false,
     repository: false,
@@ -85,40 +81,13 @@ export default function Home() {
               />
             </FormProvider>
           </div>
-          <CardListContainer>
-            {data.length > 0 ? data.map((data, index) => (
-              <CardList key={index}>
-                <div className="header" onClick={() => handleClickCard(data)}>
-                  <Image
-                    width="60"
-                    height="60"
-                    src={data.avatar_url}
-                    alt={data.login}
-                    title={data.login}
-                    aria-label={data.login}
-                  />
-                  <h3>{data.login}</h3>
-                  {dataSelected?.id !== data.id ?
-                    <ChevronDown />
-                    :
-                    <ChevronUp />
-                  }
-                </div>
-                {dataSelected?.id === data.id ?
-                  <div className="details">
-                    {isLoading.repository ?
-                      <PulseLoader size={10} />
-                      : repository.map((data: Repository, index: number) => (
-                        <div key={index} className="list-detail">
-                          <h4>{data.name} <span>{data.stargazers_count} <Star /></span></h4>
-                          <p>{data.description}</p>
-                        </div>
-                      ))}
-                  </div>
-                  : <></>}
-              </CardList>
-            )) : <EmptyComponent />}
-          </CardListContainer>
+          <RepositoryItems
+            data={data} 
+            dataSelected={dataSelected}
+            repository={repository}
+            handleClickCard={handleClickCard}
+            isLoading={isLoading.repository}
+          />
         </div>
       </Container>
     </Layout>
@@ -154,69 +123,3 @@ const Container = styled.section`
     height: 100vh!important;
   }
 `;
-
-const CardListContainer = styled.div`
-  height: calc(100vh - 300px);
-  overflow: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  background-color: ${({ theme }) => theme.colors.gray};
-  padding: calc(4px + 0.4vh) calc(4px + 0.4vw);
-
-`
-
-const CardList = styled.div`
-  width: 100%;
-  background-color: ${({ theme }) => theme.colors.white};
-  box-shadow: 2px 5px 10px rgb(0,0,0, 0.1);
-  
-  h3{
-    margin: 0;
-    white-space: nowrap; 
-    width: calc(100% - (((4px + 0.4vw) * 2) + 2px + 60px + 60px)); 
-    overflow: hidden;
-    text-overflow: ellipsis; 
-  }
-
-  > div.header {
-    padding: calc(4px + 0.4vh) calc(4px + 0.4vw);
-    display: flex;
-    align-items: center;
-    gap: 30px;
-    cursor: pointer;
-    border: 2px solid ${({ theme }) => theme.colors.white};
-  }
-
-  > div.details{
-    padding: calc(4px + 0.4vh) calc(4px + 0.4vw);
-    background-color: ${({ theme }) => theme.colors.gray};
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-
-    .list-detail{
-      padding: calc(8px + 0.8vh) calc(8px + 0.8vw);
-      background-color: ${({ theme }) => theme.colors.white};
-
-      h4 {
-        margin: 0;
-        display: flex;
-        justify-content: space-between;
-        gap: 10px;
-        font-size: 18px;
-        margin-bottom: 8px;
-      }
-
-      p {
-        margin: 0;
-      }
-    }
-  }
-
-  &:hover {
-    > div.header {
-      border: 2px solid ${({ theme }) => theme.colors.gray};
-    }
-  }
-`

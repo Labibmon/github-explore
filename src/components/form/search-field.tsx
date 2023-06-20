@@ -1,7 +1,7 @@
 import { FormEvent } from "react"
 import styled from "styled-components"
 import media from "styled-media-query"
-import { useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form"
 import Button from "./button"
 import Input from "./input"
 
@@ -12,20 +12,6 @@ type SearchField = {
   isLoading?: boolean
   onSubmit: (event: FormEvent<HTMLFormElement>) => void
 }
-
-
-const SearchStyled = styled.form`
-  display: flex;
-  gap: 10px;
-  width: 100%;
-  min-width: 100%;
-  max-width: 100%;
-
-  ${media.lessThan("medium")`
-    flex-direction: column;
-    align-items: stretch;
-  `}
-`
 
 const SearchField = ({
   title,
@@ -51,5 +37,18 @@ const SearchField = ({
     </SearchStyled>
   )
 }
+
+const SearchStyled = styled.form`
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+
+  ${media.lessThan("medium")`
+    flex-direction: column;
+    align-items: stretch;
+  `}
+`
 
 export default SearchField
