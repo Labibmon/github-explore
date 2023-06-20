@@ -12,6 +12,7 @@ const Main = styled.main`
   height: 100vh;
   min-height: 100vh;
   max-height: 100vh;
+  overflow: hidden;
   background-color: ${({ theme }) => theme.colors.white};
 `
 
