@@ -1,13 +1,14 @@
+import { useState } from "react";
+import Image from "next/image";
+import styled from "styled-components";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import SearchField from "@/components/form/search-field";
 import Layout from "@/components/layout";
-import { getUser } from "@/services/api";
-import styled from "styled-components";
-import { useState } from "react";
-import { User, UserItem } from "@/shared/githubAPI";
-import Image from "next/image";
+import { getRepository, getUser } from "@/services/api";
+import { Repository, User, UserItem } from "@/shared/githubAPI";
 import ChevronUp from "@/components/icons/chevron-up";
 import ChevronDown from "@/components/icons/chevron-down";
+import Star from "@/components/icons/star";
 
 type InputType = {
   userName?: string
@@ -17,12 +18,7 @@ type InputType = {
 export default function Home() {
   const [data, setData] = useState<UserItem[]>([])
   const [dataSelected, setDataSelected] = useState<UserItem>()
-  const [repository, setRepository] = useState({
-    id: 0,
-    title: 'Title',
-    description: 'Descriptions',
-    star: 12,
-  })
+  const [repository, setRepository] = useState<Repository[]>([])
   const methods = useForm<InputType>()
 
   const onSubmit: SubmitHandler<InputType> = async (
@@ -44,8 +40,24 @@ export default function Home() {
     }
   };
 
-  const handleClickCard = (item: UserItem) => {
-    setDataSelected(item.id === dataSelected?.id ? undefined : item)
+  const handleClickCard = async (item: UserItem) => {
+    if (item.id === dataSelected?.id) {
+      setDataSelected(undefined)
+    } else {
+      setDataSelected(item);
+
+      try {
+        const data: Repository[] = await getRepository(item.login);
+        setRepository(data)
+      } catch (error) {
+        console.log(error);
+
+        // setError("userName", {
+        //   type: "manual",
+        //   message: error.toJSON().message,
+        // });
+      }
+    }
   }
 
   return (
@@ -84,11 +96,14 @@ export default function Home() {
                 </div>
                 {dataSelected?.id === data.id ?
                   <div className="details">
-                    {repository.title}
-                    {repository.description}
-                    {repository.star}
+                    {repository.map((data: Repository, index: number) => (
+                      <div key={index} className="list-detail">
+                        <h4>{data.name} <span>{data.stargazers_count} <Star /></span></h4>
+                        <p>{data.description}</p>
+                      </div>
+                    ))}
                   </div>
-                : <></>}
+                  : <></>}
               </CardList>
             )) : ''}
           </CardListContainer>
@@ -134,7 +149,7 @@ const CardListContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 30px;
-  box-shadow: inset 0 10px 75px rgb(0,0,0, 0.1);
+  background-color: ${({ theme }) => theme.colors.gray};
   padding: calc(4px + 0.4vh) calc(4px + 0.4vw);
 
 `
@@ -164,6 +179,27 @@ const CardList = styled.div`
   > div.details{
     padding: calc(4px + 0.4vh) calc(4px + 0.4vw);
     background-color: ${({ theme }) => theme.colors.gray};
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .list-detail{
+      padding: calc(8px + 0.8vh) calc(8px + 0.8vw);
+      background-color: ${({ theme }) => theme.colors.white};
+
+      h4 {
+        margin: 0;
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        font-size: 18px;
+        margin-bottom: 8px;
+      }
+
+      p {
+        margin: 0;
+      }
+    }
   }
 
   &:hover {

@@ -13,3 +13,9 @@ export interface UserItem {
   id: number
   login: string
 }
+
+export interface Repository {
+  name: string;
+  description: string;
+  stargazers_count: number;
+}

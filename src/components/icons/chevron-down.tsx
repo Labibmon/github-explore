@@ -1,4 +1,3 @@
-import * as React from "react"
 const ChevronDown = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
