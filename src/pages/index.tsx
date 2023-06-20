@@ -39,12 +39,11 @@ export default function Home() {
       setIsLoading({ ...isLoading, data: false })
 
     } catch (error) {
-      console.log(error);
       setIsLoading({ ...isLoading, data: false })
-      // setError("userName", {
-      //   type: "manual",
-      //   message: error.toJSON().message,
-      // });
+      methods.setError("userName", {
+        type: "manual",
+        message: 'Error',
+      });
     }
   };
 
@@ -62,11 +61,10 @@ export default function Home() {
       } catch (error) {
         console.log(error);
         setIsLoading({ ...isLoading, repository: false })
-
-        // setError("userName", {
-        //   type: "manual",
-        //   message: error.toJSON().message,
-        // });
+        methods.setError("userName", {
+          type: "manual",
+          message: 'Error',
+        });
       }
     }
   }
