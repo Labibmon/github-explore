@@ -1,8 +1,8 @@
 # github-explorer
-Application which integrates with github.com API and allows user to search for up to 5 users with a username similar to the value entered in text input and then on click, display repositories (no limit on displayed repositories amount) for selected GitHub user
 
+This is a [Next.js](https://nextjs.org/) project application which integrates with github.com API and allows user to search for up to 5 users with a username similar to the value entered in text input and then on click, display repositories (no limit on displayed repositories amount) for selected GitHub user.
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+[![DEMO]][https://github-explore-omega.vercel.app/]
 
 ## Getting Started
 
@@ -17,6 +17,7 @@ pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
 
 You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
 
