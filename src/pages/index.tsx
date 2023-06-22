@@ -30,10 +30,10 @@ export default function Home() {
     setIsLoading({ ...isLoading, data: true })
     try {
       const data: User = await getUser(userName);
-      setData(data.items)
+      setData(data?.items)
       setIsLoading({ ...isLoading, data: false })
       
-      if(data.items.length > 0) handleClickCard(data.items[0])
+      if(data?.items?.length > 0) handleClickCard(data.items[0])
     } catch (error) {
       setIsLoading({ ...isLoading, data: false })
       methods.setError("userName", {

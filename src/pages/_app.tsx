@@ -8,7 +8,7 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
     max-width: 100vw;
     overflow-x: hidden;
-  }
+  };
 `
 
 interface ThemeInterface {
