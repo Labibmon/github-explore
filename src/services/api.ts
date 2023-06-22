@@ -10,7 +10,8 @@ export const api = axios.create({
 export async function getUser(userName?: string) {
   const { data } = await api.get<User>(`search/users`, {
     params: {
-      q: userName
+      q: userName,
+      per_page: 5,
     }
   });
 

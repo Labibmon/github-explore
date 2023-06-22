@@ -46,12 +46,12 @@ const RepositoryItems = ({
             <div className="details">
               {isLoading ?
                 <PulseLoader size={10} />
-                : repository.map((data: Repository, index: number) => (
+                : repository.length > 0 ? repository.map((data: Repository, index: number) => (
                   <div key={index} className="list-detail">
                     <h4>{data.name} <span>{data.stargazers_count} <Star /></span></h4>
                     <p>{data.description}</p>
-                  </div>
-                ))}
+                  </div> 
+                )) : "Repository is empty"}
             </div>
             : <></>}
         </CardList>
