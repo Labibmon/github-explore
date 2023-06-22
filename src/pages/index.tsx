@@ -31,9 +31,9 @@ export default function Home() {
     try {
       const data: User = await getUser(userName);
       setData(data.items)
-      console.log(data.items);
       setIsLoading({ ...isLoading, data: false })
-
+      
+      if(data.items.length > 0) handleClickCard(data.items[0])
     } catch (error) {
       setIsLoading({ ...isLoading, data: false })
       methods.setError("userName", {
